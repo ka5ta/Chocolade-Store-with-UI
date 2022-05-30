@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" th:href=@{/css/styles.css}>
+    <meta charset="UTF-8">
+    <title>Register</title>
+</head>
+<body>
+<div class="my-container">
+    <h2>Login to your account</h2>
+    <hr>
+
+    <form>
+        <label for="email"><b>Email</b></label>
+        <input type="text" placeholder="Enter email" name="email" id="email" required>
+
+        <label for="psw"><b>Password</b></label>
+        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+
+        <button type="submit" class="registerbtn middle-text">Log in</button>
+        <hr>
+    </form>
+
+    <div class="signin middle-text">
+        <p>Do not have account? <a href="register.html" th:href="@{/shopping/register}">Register here</a></p>
+    </div>
+</div>
+
+
+</body>
+</html>

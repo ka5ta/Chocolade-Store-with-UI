@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="ISO-8859-1"/>
+    <link rel="stylesheet" th:href=@{/css/styles.css}>
+    <link th:rel="stylesheet" th:href="@{/webjars/bootstrap/5.1.3/css/bootstrap.min.css} "/>
+    <title>Spring Boot Application</title>
+</head>
+<body>
+<div class="my-container table-sized">
+    <h2>Welcome to Chocolate Store. Add items to the basket</h2>
+    <h2>Shopping Card:</h2>
+    <div class="container">
+        <table class="table">
+            <head>
+                <tr>
+                    <th scope="col">Brand</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Available</th>
+                    <th scope="col">Quantity in Basket</th>
+                    <th scope="col">Basket</th>
+                </tr>
+            </head>
+            <tbody>
+
+            <tr th:if="${items.empty}">
+                <td colspan="2"> Store is currently empty, we apologise.</td>
+            </tr>
+
+            <tr th:each="item : ${items}">
+                <td><span th:text="${item.name}"></span></td>
+                <td><input id="price" class="static" type="text" th:value="${item.price} + ' PLN'" readonly></span></td>
+                <td><input id="available-count" class="form-control form-control-sm" type="number" th:value="${item.price}" readonly></td>
+                <td>
+                    <div class="add-basket">
+                        <input id="input-add" style="margin-right: 10px" class="form-control form-control-sm" min="0" type="number">
+                        <button id="btn-add" class="add-btn">Update</button>
+                    </div>
+                </td>
+                <td><input id="basket" class="static" type="text" th:value="${item.price}" readonly></td>
+            </tr>
+
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+
+</script>
+
+</body>
+</html>

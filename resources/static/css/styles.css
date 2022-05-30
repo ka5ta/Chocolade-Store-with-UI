@@ -1,0 +1,116 @@
+
+/* Add padding to containers */
+.my-container {
+  max-width: 500px;
+  padding: 16px;
+  margin: auto;
+}
+
+.table-sized{
+    max-width: 800px;
+}
+
+/* Full-width input fields */
+input[type=text], input[type=password] {
+  width: 100%;
+  padding: 15px;
+  margin: 5px 0 22px 0;
+  display: inline-block;
+  border: none;
+  background: #f1f1f1;
+}
+
+input[type=number] {
+text-align: center;
+}
+
+input[type=text]:focus, input[type=password]:focus {
+  background-color: #ddd;
+  outline: none;
+}
+
+/* Overwrite default styles of hr */
+hr {
+  border: 1px solid #f1f1f1;
+  margin-bottom: 15px;
+}
+
+/* Set a style for the submit/register button */
+.registerbtn {
+  background-color: #04AA6D;
+  color: white;
+  padding: 16px 20px;
+  margin: 8px 0;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  opacity: 0.9;
+}
+
+.registerbtn:hover {
+  opacity:1;
+}
+
+.add-btn {
+  background-color: #04AA6D;
+  color: white;
+  border: none;
+  cursor: pointer;
+  opacity: 0.9;
+  border-radius: 0.2rem;
+}
+
+.add-btn:hover {
+  opacity:1;
+}
+
+/* Add a blue text color to links */
+a {
+  color: dodgerblue;
+}
+
+/* Set a grey background color and center the text of the "sign in" section */
+.signin {
+  text-align: center;
+  margin: 8px 0;
+  padding: 5px 20px;
+
+}
+
+.small-text{
+text-align: center;
+font-size: 10px;
+}
+
+.middle-text{
+text-align: center;
+font-size: 15px;
+}
+
+p {
+margin: 0px;
+}
+
+.table {
+    text-align: center;
+}
+
+td {
+vertical-align: middle;
+}
+
+td > input.static{
+width: 100%;
+text-align: center;
+input-size: 10;
+margin: 0px;
+}
+
+head > tr > th {
+width: auto;
+}
+
+.add-basket{
+display: inline-flex;
+flex-direction: row;
+}
