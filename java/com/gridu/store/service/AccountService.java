@@ -6,9 +6,12 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 @Service
 public class AccountService {
+
 
     private final AccountRepository repository;
 
@@ -19,4 +22,9 @@ public class AccountService {
     public List<Account> findAll(){
         return new ArrayList<>(repository.findAll());
     }
+
+    public Account findById(Long id){
+        return repository.findById(id).orElseThrow();
+    }
+
 }

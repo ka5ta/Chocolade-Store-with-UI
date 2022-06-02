@@ -3,7 +3,6 @@ package com.gridu.store.model;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity
 @Data
@@ -15,9 +14,17 @@ public class Stock {
     private Long id;
 
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name="item_id")
+    @JoinColumn(name="product_id")
     @MapsId
-    private Item item;
+    private Product product;
     private int quantity;
 
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", productId=" + product.getId() +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

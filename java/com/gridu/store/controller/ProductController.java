@@ -1,8 +1,8 @@
 package com.gridu.store.controller;
 
-import com.gridu.store.model.Item;
-import com.gridu.store.repository.StoreRepository;
-import com.gridu.store.service.StoreService;
+import com.gridu.store.model.Product;
+import com.gridu.store.repository.ProductRepository;
+import com.gridu.store.service.ProductService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,29 +12,29 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("products")
-public class StoreController {
+public class ProductController {
 
-    private final StoreService service;
-    private final StoreRepository repository;
+    private final ProductService service;
+    private final ProductRepository repository;
 
-    public StoreController(StoreService service, StoreRepository repository) {
+    public ProductController(ProductService service, ProductRepository repository) {
         this.service = service;
         this.repository = repository;
     }
 
     @GetMapping
-    public List<Item> all() {
+    public List<Product> all() {
         return service.findAll();
     }
 
     @PostMapping
-    public Item add(@RequestBody Item item) {
-        repository.save(item);
-        return item;
+    public Product add(@RequestBody Product product) {
+        repository.save(product);
+        return product;
     }
 
     @GetMapping("/{id}")
-    public Item get(@PathVariable Long id) {
+    public Product get(@PathVariable Long id) {
         return repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("Item not found for id: " + id)
         );
@@ -42,8 +42,8 @@ public class StoreController {
 
     @DeleteMapping("/{id}/delete")
     public Map<String, Boolean> delete(@PathVariable Long id) {
-        Item item = get(id);
-        repository.delete(item);
+        Product product = get(id);
+        repository.delete(product);
 
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
