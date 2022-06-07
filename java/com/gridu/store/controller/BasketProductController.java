@@ -10,8 +10,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
-
 @Controller
 public class BasketProductController {
 
@@ -31,8 +29,14 @@ public class BasketProductController {
             System.out.println("some errors in binding" + bindingResult);
         }
 
-        BasketProduct newBasketProduct = service.createBasketProduct(basketProductPostDTO);
-        repository.save(newBasketProduct);
+        try {
+            BasketProduct newBasketProduct = service.createOrUpdateBasketProduct(basketProductPostDTO);
+            repository.save(newBasketProduct);
+        }catch (RuntimeException e){
+            //todo display information to frontend that basket is null or 0 quantity.
+            System.out.println();
+        }
+
     return "redirect:shopping";
     }
 }

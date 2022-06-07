@@ -1,9 +1,7 @@
 package com.gridu.store.DTO;
 
-
 import lombok.Data;
 
-import java.text.DecimalFormat;
 
 @Data
 public class BasketProductGetDTO implements BasketProductDTO {

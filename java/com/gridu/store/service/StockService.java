@@ -14,16 +14,8 @@ public class StockService {
         this.repository = repository;
     }
 
-    public boolean subtractQuantity(Product product, int quantityToSubtract) {
-        Stock stock = product.getStock();
-        int originalQuantity = stock.getQuantity();
-
-        if (originalQuantity >= quantityToSubtract) {
-            stock.setQuantity(originalQuantity - quantityToSubtract);
-            return true;
-        } else {
-            return false;
-        }
-
+    public int getStockForProduct(Product product) {
+        return product.getStock().getQuantity();
     }
+
 }

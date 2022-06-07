@@ -19,11 +19,10 @@ public interface ProductRepository extends JpaRepository<Product, Long> {
             "p.id as productId, " +
             "s.quantity as stockQuantity, " +
             "b.quantity as basketQuantity, " +
-            "b.account_id as basketProductId " +
+            "b.id as basketProductId " +
             "FROM PRODUCTS p " +
             "LEFT JOIN STOCK s ON s.PRODUCT_ID = p.ID " +
-            "LEFT JOIN BASKET_PRODUCTS b ON b.PRODUCT_ID=p.ID " +
-            "LEFT JOIN ACCOUNTS a ON a.ID = b.ACCOUNT_ID and a.ID = :accountId", nativeQuery = true)
+            "LEFT JOIN BASKET_PRODUCTS b ON b.PRODUCT_ID=p.ID and b.ACCOUNT_ID=:accountId", nativeQuery = true)
             List<BasketProductDTO> findAllWithBasketProductByAccountId(@Param("accountId") Long accountId);
 
 

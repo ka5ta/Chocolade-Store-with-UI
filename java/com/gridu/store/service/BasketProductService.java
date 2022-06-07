@@ -52,24 +52,35 @@ public class BasketProductService {
         return basketsProductForAccount;
     }
 
-    public BasketProduct createBasketProduct(BasketProductPostDTO basketProductPostDTO) {
+    public BasketProduct createOrUpdateBasketProduct(BasketProductPostDTO basketProductPostDTO) {
 
         Product product = productService.findById(basketProductPostDTO.getProductId());
         Account account = accountService.findById(basketProductPostDTO.getAccountId());
-        int quantity = basketProductPostDTO.getBasketQuantity();
+        Integer quantity = basketProductPostDTO.getBasketQuantity();
+
+        if(quantity == null){
+            quantity = 0;
+        }
 
         if (!canUpdateQuantity(product, quantity)) {
             throw new RuntimeException("Quantity is not available");
         }
 
+        Integer finalQuantity = quantity;
         BasketProduct basketByAccountAndProduct = repository
                 .findByAccountAndProduct(account, product)
                 .orElseGet( () -> {
+
+                    if(finalQuantity == 0){
+                    throw new RuntimeException("Basket with 0 quantity can't be created");
+                    }
+
                     BasketProduct newBasketProduct = new BasketProduct();
                     newBasketProduct.setProduct(product);
                     newBasketProduct.setAccount(account);
                     return newBasketProduct;}
                 );
+
 
         basketByAccountAndProduct.setQuantity(quantity);
 
@@ -77,6 +88,7 @@ public class BasketProductService {
     }
 
     private boolean canUpdateQuantity(Product product, int quantity) {
-        return stockService.subtractQuantity(product, quantity);
+        int currentStockAmount = stockService.getStockForProduct(product);
+        return currentStockAmount >= quantity;
     }
 }
