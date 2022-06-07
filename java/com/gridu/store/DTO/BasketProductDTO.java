@@ -3,7 +3,6 @@ package com.gridu.store.DTO;
 import lombok.Data;
 
 
-
 public interface BasketProductDTO {
 
 
@@ -14,5 +13,4 @@ public interface BasketProductDTO {
     Long getBasketProductId();
 
     String getBasketProductPrice();
-
 }

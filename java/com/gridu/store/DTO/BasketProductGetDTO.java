@@ -4,7 +4,8 @@ import lombok.Data;
 
 
 @Data
-public class BasketProductGetDTO implements BasketProductDTO {
+public class BasketProductGetDTO {
+//public class BasketProductGetDTO implements BasketProductDTO {
 
     private Long productId;
     private Long accountId = 1L;

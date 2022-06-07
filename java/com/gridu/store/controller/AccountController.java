@@ -17,11 +17,10 @@ import java.util.Map;
 public class AccountController {
 
     private final AccountService service;
-    private final AccountRepository repository;
 
-    public AccountController(AccountService service, AccountRepository repository) {
+    public AccountController(AccountService service ) {
         this.service = service;
-        this.repository = repository;
+
     }
 
     @GetMapping("/signup")
@@ -34,23 +33,17 @@ public class AccountController {
         return service.findAll();
     }
 
-    @Transactional
-    public Account add(Account account) {
-        repository.save(account);
-        return account;
-    }
+
 
     @GetMapping("/{id}")
     public Account get(@PathVariable Long id) {
-        return repository.findById(id).orElseThrow(
-                () -> new ResourceNotFoundException("User not found for id: " + id)
-        );
+        return service.findById(id);
     }
 
     @Transactional
     public Map<String, Boolean> delete(@PathVariable Long id) {
         Account account = get(id);
-        repository.delete(account);
+        service.delete(account);
 
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);

@@ -14,11 +14,9 @@ import org.springframework.web.bind.annotation.*;
 public class BasketProductController {
 
 
-    private final BasketProductRepository repository;
     private final BasketProductService service;
 
-    public BasketProductController(BasketProductRepository repository, BasketProductService service) {
-        this.repository = repository;
+    public BasketProductController(BasketProductService service) {
         this.service = service;
     }
 
@@ -31,7 +29,7 @@ public class BasketProductController {
 
         try {
             BasketProduct newBasketProduct = service.createOrUpdateBasketProduct(basketProductPostDTO);
-            repository.save(newBasketProduct);
+            service.save(newBasketProduct);
         }catch (RuntimeException e){
             //todo display information to frontend that basket is null or 0 quantity.
             System.out.println();

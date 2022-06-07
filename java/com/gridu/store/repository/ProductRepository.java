@@ -1,6 +1,7 @@
 package com.gridu.store.repository;
 
 import com.gridu.store.DTO.BasketProductDTO;
+import com.gridu.store.DTO.BasketProductGetDTO;
 import com.gridu.store.model.Product;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,16 +15,6 @@ import java.util.List;
 public interface ProductRepository extends JpaRepository<Product, Long> {
 
     List<Product> findAll();
-
-    @Query(value = "SELECT " +
-            "p.id as productId, " +
-            "s.quantity as stockQuantity, " +
-            "b.quantity as basketQuantity, " +
-            "b.id as basketProductId " +
-            "FROM PRODUCTS p " +
-            "LEFT JOIN STOCK s ON s.PRODUCT_ID = p.ID " +
-            "LEFT JOIN BASKET_PRODUCTS b ON b.PRODUCT_ID=p.ID and b.ACCOUNT_ID=:accountId", nativeQuery = true)
-            List<BasketProductDTO> findAllWithBasketProductByAccountId(@Param("accountId") Long accountId);
 
 
 }

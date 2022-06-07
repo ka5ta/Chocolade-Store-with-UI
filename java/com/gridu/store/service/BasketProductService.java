@@ -29,7 +29,7 @@ public class BasketProductService {
     }
 
     public List<BasketProductGetDTO> getBasketProductForAccount(Long accountId) {
-        List<BasketProductDTO> allProductsInProductBasketForUser = productService.getAllProductsInProductBasketForUser(accountId);
+        List<BasketProductDTO> allProductsInProductBasketForUser = getAllProductsInProductBasketForUser(accountId);
         List<BasketProductGetDTO> basketsProductForAccount = new ArrayList<>();
 
         allProductsInProductBasketForUser.forEach(b -> {
@@ -58,7 +58,7 @@ public class BasketProductService {
         Account account = accountService.findById(basketProductPostDTO.getAccountId());
         Integer quantity = basketProductPostDTO.getBasketQuantity();
 
-        if(quantity == null){
+        if (quantity == null) {
             quantity = 0;
         }
 
@@ -69,16 +69,17 @@ public class BasketProductService {
         Integer finalQuantity = quantity;
         BasketProduct basketByAccountAndProduct = repository
                 .findByAccountAndProduct(account, product)
-                .orElseGet( () -> {
+                .orElseGet(() -> {
 
-                    if(finalQuantity == 0){
-                    throw new RuntimeException("Basket with 0 quantity can't be created");
-                    }
+                            if (finalQuantity == 0) {
+                                throw new RuntimeException("Basket with 0 quantity can't be created");
+                            }
 
-                    BasketProduct newBasketProduct = new BasketProduct();
-                    newBasketProduct.setProduct(product);
-                    newBasketProduct.setAccount(account);
-                    return newBasketProduct;}
+                            BasketProduct newBasketProduct = new BasketProduct();
+                            newBasketProduct.setProduct(product);
+                            newBasketProduct.setAccount(account);
+                            return newBasketProduct;
+                        }
                 );
 
 
@@ -91,4 +92,14 @@ public class BasketProductService {
         int currentStockAmount = stockService.getStockForProduct(product);
         return currentStockAmount >= quantity;
     }
+
+    public void save(BasketProduct basketProduct) {
+        repository.save(basketProduct);
+    }
+
+
+    public List<BasketProductDTO> getAllProductsInProductBasketForUser(Long accountID) {
+        return repository.findAllWithBasketProductByAccountId(accountID);
+    }
 }
+

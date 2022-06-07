@@ -17,20 +17,12 @@ import org.springframework.web.servlet.ModelAndView;
 @RequestMapping("/shopping")
 public class WebController {
 
-    private final ProductService productService;
+
     private final BasketProductService basketProductService;
-    private final ProductRepository productRepository;
-    private final StockRepository stockRepository;
-
-    private final BasketProductRepository basketProductRepository;
 
 
-    public WebController(ProductService productService, BasketProductService basketProductService, ProductRepository productRepository, StockRepository stockRepository, BasketProductRepository basketProductRepository) {
-        this.productService = productService;
+    public WebController(BasketProductService basketProductService) {
         this.basketProductService = basketProductService;
-        this.productRepository = productRepository;
-        this.stockRepository = stockRepository;
-        this.basketProductRepository = basketProductRepository;
     }
 
 
@@ -54,9 +46,6 @@ public class WebController {
 
 
 }
-
-
-//https://www.baeldung.com/spring-boot-crud-thymeleaf
 
 
 /*
