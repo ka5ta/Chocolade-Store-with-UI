@@ -58,20 +58,16 @@ public class BasketProductService {
         Account account = accountService.findById(basketProductPostDTO.getAccountId());
         Integer quantity = basketProductPostDTO.getBasketQuantity();
 
-        if (quantity == null) {
-            quantity = 0;
-        }
-
         if (!canUpdateQuantity(product, quantity)) {
             throw new RuntimeException("Quantity is not available");
         }
 
-        Integer finalQuantity = quantity;
+
         BasketProduct basketByAccountAndProduct = repository
                 .findByAccountAndProduct(account, product)
                 .orElseGet(() -> {
 
-                            if (finalQuantity == 0) {
+                            if (quantity == 0 || quantity == null) {
                                 throw new RuntimeException("Basket with 0 quantity can't be created");
                             }
 
@@ -81,7 +77,6 @@ public class BasketProductService {
                             return newBasketProduct;
                         }
                 );
-
 
         basketByAccountAndProduct.setQuantity(quantity);
 
@@ -100,6 +95,14 @@ public class BasketProductService {
 
     public List<BasketProductDTO> getAllProductsInProductBasketForUser(Long accountID) {
         return repository.findAllWithBasketProductByAccountId(accountID);
+    }
+
+    public List<BasketProduct> findAllByAccountId(Long accountId) {
+        return repository.findByAccountId(accountId);
+    }
+
+    public void remove( BasketProduct basketProduct) {
+        repository.delete(basketProduct);
     }
 }
 

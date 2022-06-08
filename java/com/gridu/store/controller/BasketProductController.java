@@ -28,8 +28,8 @@ public class BasketProductController {
         }
 
         try {
-            BasketProduct newBasketProduct = service.createOrUpdateBasketProduct(basketProductPostDTO);
-            service.save(newBasketProduct);
+            BasketProduct basketProduct = service.createOrUpdateBasketProduct(basketProductPostDTO);
+            service.save(basketProduct);
         }catch (RuntimeException e){
             //todo display information to frontend that basket is null or 0 quantity.
             System.out.println();

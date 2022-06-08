@@ -15,7 +15,7 @@ public interface BasketProductRepository extends CrudRepository<BasketProduct, L
 
     Optional<BasketProduct> findByAccountAndProduct(Account account, Product product);
 
-
+//todo replace with mapper: https://mapstruct.org/ and https://www.baeldung.com/mapstruct
     @Query(value = "SELECT " +
             "p.id as productId, " +
             "s.quantity as stockQuantity, " +
@@ -25,4 +25,7 @@ public interface BasketProductRepository extends CrudRepository<BasketProduct, L
             "LEFT JOIN STOCK s ON s.PRODUCT_ID = p.ID " +
             "LEFT JOIN BASKET_PRODUCTS b ON b.PRODUCT_ID=p.ID and b.ACCOUNT_ID=:accountId", nativeQuery = true)
     List<BasketProductDTO> findAllWithBasketProductByAccountId(@Param("accountId") Long accountId);
+
+
+    List<BasketProduct> findByAccountId(Long accountId);
 }

@@ -2,30 +2,30 @@ package com.gridu.store.model;
 
 import com.gridu.store.DTO.BasketProductDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Data
-@Table(name="products")
+@Table(name = "products")
 public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
     private String name;
-    private double  price;
+    private double price;
+
     @OneToOne(mappedBy = "product")
+    @EqualsAndHashCode.Exclude
     private Stock stock;
 
-    @Override
-    public String toString() {
-        return "Product{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", price=" + price +
-                ", stockId=" + stock.getId() +
-                '}';
-    }
+    @OneToMany(mappedBy = "product")
+    private List<OrderProduct> orderProducts;
 }
+
+

@@ -24,7 +24,26 @@
           document.getElementById('product-basket-input_'+thisId).value = null;
           }
         }
-        </script>
+
+        window.onload = function() {
+            sumAll();
+        };
+
+        function sumAll() {
+        var sum = 0.0;
+          var list = document.querySelectorAll('[id^="product-basket-input"]');
+            for (const element of list){
+                var text = element.value.replace(" PLN", "");
+                var floatValue = parseFloat(text);
+
+                if(!isNaN(floatValue)){
+                    sum += floatValue;
+                }
+            }
+            document.getElementById('basket-input').value = sum.toFixed(2) + ' PLN';
+        }
+
+    </script>
 </head>
 <body>
 <div class="my-container table-sized">
@@ -47,81 +66,99 @@
                             <td colspan="2"> Store is currently empty, we apologise.</td>
                         </tr>-->
 
-            <tr th:each="productBasket : ${productBaskets}" >
+            <tr th:each="productBasket : ${productBaskets}">
                 <th:block th:with="productId=${productBasket.productId}">
 
 
+                    <!-- BRAND -->
+                    <td><span th:text="${productBasket.productName}"></span></td>
 
+                    <!-- PRICE -->
+                    <td><input th:id="price-input+'_'+${productId}" ;
+                               class="static"
+                               type="text" th:value="${productBasket.productPrice} + ' PLN'" readonly/></td>
 
-                <!-- BRAND -->
-                <td><span th:text="${productBasket.productName}"></span></td>
+                    <!-- AVAILABLE LIMIT QUANTITY -->
+                    <td>
+                        <input th:id="quantity-input+'_'+${productId}"
+                               class="form-control form-control-sm"
+                               type="number"
+                               th:value="${productBasket.stockQuantity}" readonly>
+                    </td>
 
-                <!-- PRICE -->
-                <td><input th:id="price-input+'_'+${productId}";
-                           class="static"
-                           type="text" th:value="${productBasket.productPrice} + ' PLN'" readonly/></td>
+                    <!-- QUANTITY IN BASKET -->
+                    <td>
+                        <form th:action="@{/shopping}" th:object="${basketProductPostDTO}" method="post">
 
-                <!-- AVAILABLE LIMIT QUANTITY -->
-                <td>
-                    <input th:id="quantity-input+'_'+${productId}"
-                           class="form-control form-control-sm"
-                           type="number"
-                           th:value="${productBasket.stockQuantity}" readonly>
-                </td>
+                            <!-- add Account ID-->
+                            <input hidden name="accountId"
+                                   th:id="accountId-input+'_'+${productId}"
+                                   th:value="${productBasket.accountId}"/>
 
-                <!-- QUANTITY IN BASKET -->
-                <td>
-                    <form th:action="@{/shopping}" th:object="${basketProductPostDTO}" method="post">
+                            <!--  Product ID   -->
+                            <input hidden name="productId"
+                                   th:value="${productId}"/>
 
-                        <!-- add Account ID-->
-                        <input hidden name="accountId"
-                               th:id="accountId-input+'_'+${productId}"
-                               th:value="${productBasket.accountId}"/>
+                            <!--  Basket ID   -->
+                            <input hidden name="basketProductId"
+                                   th:value="${productBasket.basketProductId}"/>
 
-                        <!--  Product ID   -->
-                        <input hidden name="productId"
-                               th:value="${productId}"/>
+                            <!--  Basket Quantity   -->
+                            <div class="add-basket">
+                                <input name="basketQuantity"
+                                       th:id="basket-quantity-input+'_'+${productId}"
+                                       onChange="getSum(this.id)"
+                                       type="number"
+                                       th:value="${productBasket.basketQuantity}"
+                                       style="margin-right: 10px"
+                                       class="form-control form-control-sm" min="0"
+                                       th:max="${productBasket.stockQuantity}"/>
 
-                        <!--  Basket ID   -->
-                        <input hidden name="basketProductId"
-                               th:value="${productBasket.basketProductId}"/>
+                                <!-- SUBMIT BUTTON -->
+                                <button type="submit" onClick="sumAll()" id="btn-add" class="add-btn">Update</button>
+                            </div>
+                        </form>
+                    </td>
 
-                        <!--  Basket Quantity   -->
-                        <div class="add-basket">
-                            <input name="basketQuantity"
-                                    th:id="basket-quantity-input+'_'+${productId}"
-                                   onChange="getSum(this.id)"
-                                   type="number"
-                                   th:value="${productBasket.basketQuantity}"
-                                   style="margin-right: 10px"
-                                   class="form-control form-control-sm" min="0"
-                                   th:max="${productBasket.stockQuantity}"/>
-
-                        <!-- SUBMIT BUTTON -->
-                        <button type="submit" id="btn-add" class="add-btn">Update</button>
-                        </div>
-                    </form>
-                </td>
-
-                <!-- BASKET -->
-                <td><input th:id="product-basket-input+'_' + ${productId}"
-                           class="static"
-                           type="text"
-                           th:value="${productBasket.basketProductPrice}" readonly></td>
+                    <!-- BASKET -->
+                    <td><input th:id="product-basket-input+'_' + ${productId}"
+                               class="static"
+                               type="text"
+                               th:value="${productBasket.basketProductPrice}" readonly>
+                    </td>
 
                 </th:block>
             </tr>
 
+            <tr>
+                <td colspan="5">
+                </td>
 
+            </tr>
+
+            <tr>
+                <form action="/shopping/order" method="post">
+
+                    <td colspan="4" style="text-align:right">
+                        <button type="submit" class="add-btn">Process Payment</button>
+                    </td>
+                    <td>
+                        <input id="basket-input"
+                               style="font-weight: bold;"
+                               class="static"
+                               type="text"
+                               value="0 PLN" readonly/>
+                        <input hidden name="accountId" th:value="${accountId}" type="number"/>
+                    </td>
+                </form>
+                </td>
+            </tr>
 
             </tbody>
         </table>
     </div>
 </div>
 
-<script>
-
-</script>
 
 </body>
 </html>

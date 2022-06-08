@@ -1,6 +1,7 @@
 package com.gridu.store.model;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import javax.persistence.*;
 
@@ -13,18 +14,12 @@ public class Stock {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne
     @JoinColumn(name="product_id")
     @MapsId
     private Product product;
+
     private int quantity;
 
-    @Override
-    public String toString() {
-        return "Stock{" +
-                "id=" + id +
-                ", productId=" + product.getId() +
-                ", quantity=" + quantity +
-                '}';
-    }
+
 }

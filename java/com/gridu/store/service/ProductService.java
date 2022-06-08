@@ -2,6 +2,7 @@ package com.gridu.store.service;
 
 import com.gridu.store.DTO.BasketProductDTO;
 import com.gridu.store.DTO.BasketProductGetDTO;
+import com.gridu.store.model.BasketProduct;
 import com.gridu.store.model.Product;
 import com.gridu.store.repository.ProductRepository;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
@@ -33,6 +34,15 @@ public class ProductService {
       );
     }
 
+    public void subtractQuantityFromStock(BasketProduct basketProduct){
+        Product product = basketProduct.getProduct();
+        int productQuantity = product.getStock().getQuantity();
+        int userQuantity = basketProduct.getQuantity();
+
+        int subtracted = productQuantity - userQuantity;
+        product.getStock().setQuantity(subtracted);
+
+    }
 
     public void delete(Product product) {
         repository.delete(product);
