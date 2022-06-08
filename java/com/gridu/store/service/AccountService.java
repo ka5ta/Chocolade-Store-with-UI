@@ -6,10 +6,7 @@ import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Service
 public class AccountService {
@@ -29,6 +26,10 @@ public class AccountService {
         return repository.findById(id).orElseThrow(
                 () -> new ResourceNotFoundException("User not found for id: " + id)
         );
+    }
+
+    public Optional<Account> findByEmail(String email){
+        return repository.findByEmail(email);
     }
 
     @Transactional

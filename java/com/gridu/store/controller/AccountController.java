@@ -1,52 +1,61 @@
 package com.gridu.store.controller;
 
 
+import com.gridu.store.DTO.AccountDTO;
 import com.gridu.store.model.Account;
 import com.gridu.store.repository.AccountRepository;
 import com.gridu.store.service.AccountService;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.transaction.Transactional;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
-@RestController
-@RequestMapping("users")
+import static com.gridu.store.constraint.Role.USER;
+
+@Controller
 public class AccountController {
 
     private final AccountService service;
 
-    public AccountController(AccountService service ) {
+    public AccountController(AccountService service) {
         this.service = service;
 
     }
 
-    @GetMapping("/signup")
-    public String showSignUpForm(Account account) {
-        return "add-user";
+
+    @PostMapping("/shopping/register")
+    public String register(AccountDTO accountDTO, RedirectAttributes redirectAttributes){
+        String email = accountDTO.getEmail();
+
+        Optional<Account> byEmail = service.findByEmail(email);
+        if(byEmail.isPresent()) {
+            redirectAttributes.addFlashAttribute("emailExistsError", "You have an account. Please Sign in.");
+            return "redirect:/shopping/registration-failure";
+        } else if(!accountDTO.getPassword().equals(accountDTO.getRepeated())){
+            redirectAttributes.addFlashAttribute("emailExistsError", "Your password doesn't match. Try again");
+            return "redirect:/shopping/registration-failure";
+        } else {
+            //todo hide password to not be carried by DTO
+            Account account = new Account(email, accountDTO.getPassword(), USER);
+            service.add(account);
+        }
+        return "redirect:/shopping/registration-success";
     }
 
-    @GetMapping
-    public List<Account> all() {
-        return service.findAll();
+    @GetMapping("/shopping/registration-failure")
+    public String failure(){
+        return "registration-failure";
     }
 
-
-
-    @GetMapping("/{id}")
-    public Account get(@PathVariable Long id) {
-        return service.findById(id);
+    @GetMapping("/shopping/registration-success")
+    public String success(){
+        return "registration-success";
     }
 
-    @Transactional
-    public Map<String, Boolean> delete(@PathVariable Long id) {
-        Account account = get(id);
-        service.delete(account);
-
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-    }
 }

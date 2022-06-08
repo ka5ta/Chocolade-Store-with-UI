@@ -1,25 +1,28 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns="http://www.w3.org/1999/html">
 <head>
     <link rel="stylesheet" th:href=@{/css/styles.css}>
     <meta charset="UTF-8">
     <title>Register</title>
 </head>
 <body>
+<script>
+
+</script>
 <div class="my-container">
     <h2>Register</h2>
     <p class="middle-text">Please, fill in the form to create account.</p>
     <hr>
 
-    <form>
+    <form th:action="@{/shopping/register}" method="post" th:object="${accountDTO}">
         <label for="email"><b>Email</b></label>
-        <input type="text" placeholder="Enter email" name="email" id="email" required>
+        <input type="text" placeholder="Enter email" th:field="*{email}" id="email" required>
 
         <label for="psw"><b>Password</b></label>
-        <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
+        <input type="password" placeholder="Enter Password" th:field="*{password}" id="psw" required>
 
         <label for="psw-repeat"><b>Repeat Password</b></label>
-        <input type="password" placeholder="Repeat Password" name="psw-repeat" id="psw-repeat" required>
+        <input type="password" placeholder="Repeat Password" th:field="*{repeated}" id="psw-repeat" required>
         <hr>
 
         <p class="small-text">By creating an account you agree to our <a href="#">Terms & Privacy</a>.</p>
