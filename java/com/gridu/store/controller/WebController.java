@@ -1,5 +1,6 @@
 package com.gridu.store.controller;
 
+import com.gridu.store.DTO.BasketProductGetDTO;
 import com.gridu.store.DTO.BasketProductPostDTO;
 import com.gridu.store.DTO.AccountDTO;
 import com.gridu.store.service.BasketProductService;
@@ -9,6 +10,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("/shopping")
@@ -24,22 +27,29 @@ public class WebController {
 
 
     @GetMapping
-    public String shopping(ModelMap modelMap){
-        modelMap.addAttribute("productBaskets", basketProductService.getBasketProductForAccount(1L));
+    public String shopping(ModelMap modelMap) {
         //todo accountID is currently hardcoded
+        modelMap.addAttribute("productBaskets", basketProductService.getBasketProductForAccount(1L));
         modelMap.addAttribute("accountId", 1L);
         modelMap.addAttribute("basketProductPostDTO", new BasketProductPostDTO());
+
+        // toggle "process payment button"
+        if (basketProductService.findAllByAccountId(1L).isEmpty()) {
+            modelMap.addAttribute("disabled", true);
+        } else {
+            modelMap.addAttribute("disabled", false);
+        }
         return "shopping";
     }
 
     @GetMapping(value = "/register")
-    public String register(Model model){
+    public String register(Model model) {
         model.addAttribute("accountDTO", new AccountDTO());
         return "register";
     }
 
     @GetMapping(value = "/signin")
-    public String signin(Model model){
+    public String signin(Model model) {
         model.addAttribute("accountDTO", new AccountDTO());
         return "signin";
     }

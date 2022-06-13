@@ -101,7 +101,7 @@ public class BasketProductService {
         return repository.findByAccountId(accountId);
     }
 
-    public void remove( BasketProduct basketProduct) {
+    public void remove(BasketProduct basketProduct) {
         repository.delete(basketProduct);
     }
 }

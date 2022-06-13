@@ -43,6 +43,7 @@
             document.getElementById('basket-input').value = sum.toFixed(2) + ' PLN';
         }
 
+
     </script>
 </head>
 <body>
@@ -115,7 +116,7 @@
                                        th:max="${productBasket.stockQuantity}"/>
 
                                 <!-- SUBMIT BUTTON -->
-                                <button type="submit" onClick="sumAll()" id="btn-add" class="add-btn">Update</button>
+                                <button type="submit" onClick="sumAll(), enablePayment()" id="btn-add" class="add-btn">Update</button>
                             </div>
                         </form>
                     </td>
@@ -140,7 +141,7 @@
                 <form action="/shopping/order" method="post">
 
                     <td colspan="4" style="text-align:right">
-                        <button type="submit" class="add-btn">Process Payment</button>
+                        <button type="submit" class="add-btn" th:disabled="${disabled}" >Process Payment</button>
                     </td>
                     <td>
                         <input id="basket-input"

@@ -154,3 +154,9 @@ flex-direction: row;
   left: -20px;
   content: ' \2716';
 }
+
+button:disabled,
+button[disabled]{
+  background-color: #cccccc;
+  color: #666666;
+}
