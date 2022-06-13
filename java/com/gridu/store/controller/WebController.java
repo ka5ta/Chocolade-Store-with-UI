@@ -40,6 +40,7 @@ public class WebController {
 
     @GetMapping(value = "/signin")
     public String signin(Model model){
+        model.addAttribute("accountDTO", new AccountDTO());
         return "signin";
     }
 

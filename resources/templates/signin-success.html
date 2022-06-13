@@ -6,14 +6,13 @@
   <title>Chocolate Shop</title>
 </head>
 <body>
-<div class="my-container">
-  <h2>Registration was successful. You can now sign in  </h2>
+<div th:if="${emailPasswordSuccess}" class="my-container">
+  <h2 th:text="${emailPasswordSuccess}">Sign in was not successful. </h2>
   <hr>
 
   <div class="signin middle-text">
     <div style="display: inline-flex">
-      <a href="#" th:href="@{/shopping/register}" style="padding: 10px">Go back to Register page</a>
-      <a href="#" th:href="@{/shopping/signin}" style="padding: 10px">Go back to Sign in page</a>
+      <p>Go to<a href="#" th:href="@{/shopping/}" style="padding: 10px">Shopping page</a></p>
     </div>
   </div>
 </div>

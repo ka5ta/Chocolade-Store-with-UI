@@ -30,32 +30,55 @@ public class AccountController {
 
 
     @PostMapping("/shopping/register")
-    public String register(AccountDTO accountDTO, RedirectAttributes redirectAttributes){
+    public String register(AccountDTO accountDTO, RedirectAttributes redirectAttributes) {
         String email = accountDTO.getEmail();
 
         Optional<Account> byEmail = service.findByEmail(email);
-        if(byEmail.isPresent()) {
-            redirectAttributes.addFlashAttribute("emailExistsError", "You have an account. Please Sign in.");
-            return "redirect:/shopping/registration-failure";
-        } else if(!accountDTO.getPassword().equals(accountDTO.getRepeated())){
-            redirectAttributes.addFlashAttribute("emailExistsError", "Your password doesn't match. Try again");
-            return "redirect:/shopping/registration-failure";
+        if (byEmail.isPresent()) {
+            redirectAttributes.addFlashAttribute("emailPasswordFailure", "You have an account. Please Sign in.");
+            return "redirect:/shopping/failure";
+        } else if (!accountDTO.getPassword().equals(accountDTO.getRepeated())) {
+            redirectAttributes.addFlashAttribute("emailPasswordFailure", "Your password doesn't match. Try again");
+            return "redirect:/shopping/failure";
         } else {
             //todo hide password to not be carried by DTO
             Account account = new Account(email, accountDTO.getPassword(), USER);
             service.add(account);
         }
-        return "redirect:/shopping/registration-success";
+        redirectAttributes.addFlashAttribute("emailPasswordSuccess", "Registration was successful. You can now sign in.");
+        return "redirect:/shopping/reg-success";
     }
 
-    @GetMapping("/shopping/registration-failure")
-    public String failure(){
-        return "registration-failure";
+    @GetMapping("/shopping/failure")
+    public String failure() {
+        return "failure";
     }
 
-    @GetMapping("/shopping/registration-success")
-    public String success(){
-        return "registration-success";
+    @GetMapping("/shopping/signin-success")
+    public String successSignin() {
+        return "signin-success";
     }
 
+    @GetMapping("/shopping/reg-success")
+    public String successRegister() {
+        return "reg-success";
+    }
+
+    @PostMapping("shopping/signin")
+    public String signin(AccountDTO accountDTO, RedirectAttributes redirectAttributes) {
+        String email = accountDTO.getEmail();
+        String password = accountDTO.getPassword();
+
+        Optional<Account> byEmail = service.findByEmail(email);
+
+        if (byEmail.isPresent()) {
+            if (password.equals(byEmail.get().getPassword())) {
+                redirectAttributes.addFlashAttribute("emailPasswordSuccess", "Signing in was successful. You can now continue shopping.");
+                return "redirect:/shopping/signin-success";
+            }
+        }
+
+        redirectAttributes.addFlashAttribute("emailPasswordFailure", "Your Account email or password doesn't match. Please try again.");
+        return "redirect:/shopping/failure";
+    }
 }
