@@ -5,6 +5,7 @@ import com.gridu.store.DTO.BasketProductGetDTO;
 import com.gridu.store.model.BasketProduct;
 import com.gridu.store.model.Product;
 import com.gridu.store.repository.ProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.data.rest.webmvc.ResourceNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -13,15 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-@Service
+@Service @RequiredArgsConstructor
 public class ProductService {
-
 
     private final ProductRepository repository;
 
-    public ProductService(ProductRepository repository) {
-        this.repository = repository;
-    }
 
     public List<Product> findAll() {
         return new ArrayList<>(repository.findAll());

@@ -6,21 +6,18 @@ import com.gridu.store.model.Order;
 import com.gridu.store.model.OrderProduct;
 import com.gridu.store.model.Product;
 import com.gridu.store.repository.OrderProductRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
-@Service
+@Service @RequiredArgsConstructor
 public class OrderProductService {
 
     private final OrderProductRepository repository;
 
-
-    public OrderProductService(OrderProductRepository repository ){
-        this.repository = repository;
-
-    }
-
+    @Transactional
     public OrderProduct createOrderProduct(BasketProduct basketProduct, Order order) {
         Product product = basketProduct.getProduct();
         int quantity = basketProduct.getQuantity();

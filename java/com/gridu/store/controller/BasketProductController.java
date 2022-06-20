@@ -5,24 +5,23 @@ import com.gridu.store.model.BasketProduct;
 
 import com.gridu.store.repository.BasketProductRepository;
 import com.gridu.store.service.BasketProductService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
-public class BasketProductController {
+import javax.transaction.Transactional;
 
+@Controller
+@RequiredArgsConstructor
+public class BasketProductController {
 
     private final BasketProductService service;
 
-    public BasketProductController(BasketProductService service) {
-        this.service = service;
-    }
-
-
+    @Transactional
     @PostMapping("/shopping")
-    public String saveOrUpdate(@ModelAttribute BasketProductPostDTO basketProductPostDTO, BindingResult bindingResult, Model model){
+    public String saveOrUpdate(@ModelAttribute BasketProductPostDTO basketProductPostDTO, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             System.out.println("some errors in binding" + bindingResult);
         }
@@ -30,11 +29,11 @@ public class BasketProductController {
         try {
             BasketProduct basketProduct = service.createOrUpdateBasketProduct(basketProductPostDTO);
             service.save(basketProduct);
-        }catch (RuntimeException e){
+        } catch (RuntimeException e) {
             //todo display information to frontend that basket is null or 0 quantity.
             System.out.println();
         }
 
-    return "redirect:shopping";
+        return "redirect:shopping";
     }
 }

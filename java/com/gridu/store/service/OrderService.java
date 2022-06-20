@@ -5,12 +5,13 @@ import com.gridu.store.model.BasketProduct;
 import com.gridu.store.model.Order;
 import com.gridu.store.model.OrderProduct;
 import com.gridu.store.repository.OrderRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service
+@Service @RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository repository;
@@ -19,14 +20,7 @@ public class OrderService {
     private final OrderProductService orderProductService;
 
 
-    public OrderService(OrderRepository repository, AccountService accountService, BasketProductService basketProductService, OrderProductService orderProductService) {
-        this.repository = repository;
-        this.accountService = accountService;
-        this.basketProductService = basketProductService;
-        this.orderProductService = orderProductService;
-    }
 
-    @Transactional
     public Order createOrder(long accountId) {
         Account account = accountService.findById(accountId);
         Order order = new Order(account);

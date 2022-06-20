@@ -8,11 +8,13 @@ import com.gridu.store.model.Product;
 import com.gridu.store.model.BasketProduct;
 import com.gridu.store.repository.BasketProductRepository;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
-@Service
+@Service @RequiredArgsConstructor
 public class BasketProductService {
 
     private final BasketProductRepository repository;
@@ -20,16 +22,8 @@ public class BasketProductService {
     private final AccountService accountService;
     private final StockService stockService;
 
-
-    public BasketProductService(BasketProductRepository repository, ProductService productService, AccountService accountService, StockService stockService) {
-        this.repository = repository;
-        this.productService = productService;
-        this.accountService = accountService;
-        this.stockService = stockService;
-    }
-
-    public List<BasketProductGetDTO> getBasketProductForAccount(Long accountId) {
-        List<BasketProductDTO> allProductsInProductBasketForUser = getAllProductsInProductBasketForUser(accountId);
+    public List<BasketProductGetDTO> getBasketProductForAccount(Account account) {
+        List<BasketProductDTO> allProductsInProductBasketForUser = getAllProductsInProductBasketForUser(account);
         List<BasketProductGetDTO> basketsProductForAccount = new ArrayList<>();
 
         allProductsInProductBasketForUser.forEach(b -> {
@@ -93,8 +87,8 @@ public class BasketProductService {
     }
 
 
-    public List<BasketProductDTO> getAllProductsInProductBasketForUser(Long accountID) {
-        return repository.findAllWithBasketProductByAccountId(accountID);
+    public List<BasketProductDTO> getAllProductsInProductBasketForUser(Account account) {
+        return repository.findAllWithBasketProductByAccountId(account.getId());
     }
 
     public List<BasketProduct> findAllByAccountId(Long accountId) {

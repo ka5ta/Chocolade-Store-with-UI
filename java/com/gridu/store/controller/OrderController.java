@@ -3,31 +3,25 @@ package com.gridu.store.controller;
 import com.gridu.store.model.BasketProduct;
 import com.gridu.store.model.Order;
 import com.gridu.store.service.*;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.transaction.Transactional;
 import java.util.List;
 
-@Controller
+@Controller @RequiredArgsConstructor
 @RequestMapping("/shopping/order")
 public class OrderController {
 
     private final OrderService service;
-    private final OrderProductService orderProductService;
     private final ProductService productService;
     private final BasketProductService basketProductService;
 
 
-    public OrderController(OrderService service, OrderProductService orderProductService, ProductService productService, BasketProductService basketProductService, AccountService accountService) {
-        this.service = service;
-        this.orderProductService = orderProductService;
-        this.productService = productService;
-        this.basketProductService = basketProductService;
 
-    }
-
-
+    @Transactional
     @PostMapping()
     public String create(Long accountId){
         Order order = service.createOrder(accountId);

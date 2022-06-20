@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="ISO-8859-1"/>
     <link rel="stylesheet" th:href=@{/css/styles.css}>
@@ -48,6 +48,12 @@
 </head>
 <body>
 <div class="my-container table-sized">
+    <div align="right" style="margin:20px">
+        <span th:if="${email}">You are login as:  <b><span th:text="${email}">Unnamed</span></b></span>
+        <input type="button" onClick="window.location.href='/logout'" value="Logout"/>
+        <input type="button" onClick="window.location.href='/signin/change-password'" value="Change Password"/>
+    </div>
+
     <h2>Welcome to Chocolate Store. Add items to the basket</h2>
     <h2>Shopping Card:</h2>
     <div class="container">
@@ -94,7 +100,7 @@
                             <!-- add Account ID-->
                             <input hidden name="accountId"
                                    th:id="accountId-input+'_'+${productId}"
-                                   th:value="${productBasket.accountId}"/>
+                                   th:value="${accountId}"/>
 
                             <!--  Product ID   -->
                             <input hidden name="productId"
@@ -149,7 +155,10 @@
                                class="static"
                                type="text"
                                value="0 PLN" readonly/>
-                        <input hidden name="accountId" th:value="${accountId}" type="number"/>
+                        <!-- add Account ID-->
+                        <input hidden name="accountId"
+                               th:id="accountId-input+'_'+${productId}"
+                               th:value="${accountId}"/>
                     </td>
                 </form>
                 </td>
