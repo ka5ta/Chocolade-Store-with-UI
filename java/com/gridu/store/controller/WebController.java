@@ -1,25 +1,20 @@
 package com.gridu.store.controller;
 
-import com.gridu.store.DTO.BasketProductGetDTO;
-import com.gridu.store.DTO.BasketProductPostDTO;
-import com.gridu.store.DTO.AccountDTO;
+import com.gridu.store.dto.BasketProductPostDTO;
+import com.gridu.store.dto.PasswordChangeDTO;
+import com.gridu.store.dto.RegisterAccountDTO;
+import com.gridu.store.dto.SigninDTO;
 import com.gridu.store.model.Account;
 import com.gridu.store.service.AccountService;
 import com.gridu.store.service.BasketProductService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpSession;
 import java.security.Principal;
-import java.util.List;
 
 @Controller @RequiredArgsConstructor
 @RequestMapping("/shopping")
@@ -31,7 +26,7 @@ public class WebController {
 
     @GetMapping
     public String shopping(ModelMap modelMap, Principal principal) {
-        Account account = accountService.findByEmail(principal.getName());
+        Account account = accountService.findByEmailOrThrow(principal.getName());
 
         modelMap.addAttribute("productBaskets", basketProductService.getBasketProductForAccount(account));
         modelMap.addAttribute("basketProductPostDTO", new BasketProductPostDTO());
@@ -49,16 +44,21 @@ public class WebController {
 
     @GetMapping(value = "/register")
     public String register(Model model) {
-        model.addAttribute("accountDTO", new AccountDTO());
+        model.addAttribute("registerAccountDTO", new RegisterAccountDTO());
         return "register";
     }
 
     @GetMapping(value = "/signin")
     public String signin(Model model) {
-        model.addAttribute("accountDTO", new AccountDTO());
+        model.addAttribute("signinDTO", new SigninDTO());
         return "signin";
     }
 
+    @GetMapping("/password")
+    public String changePassword(Model model) {
+        model.addAttribute("passwordChangeDTO", new PasswordChangeDTO());
+        return "password";
+    }
 
     // for testing:
     @GetMapping("user")
@@ -73,28 +73,38 @@ public class WebController {
 
     @GetMapping("/logout")
     public String logout() {
-
         return "logout";
     }
 
+    @GetMapping("/signin/success")
+    public String successSignin() {
+        return "success";
+    }
+
     @GetMapping("/signin/failure")
-    public String failure(Model model) {
-        model.addAttribute("emailPasswordFailure", "Your email or password are wrong. Try again to sing in or register. ");
+    public String signinFailure(Model model) {
+        model.addAttribute("signinFailure", "Your email or password are wrong. Try again to sing in or register. ");
         return "failure";
     }
 
-    @GetMapping("/signin/signin-success")
-    public String successSignin() {
-        return "signin-success";
-    }
-
-    @GetMapping("/register/reg-success")
+    @GetMapping("/register/success")
     public String successRegister() {
-        return "reg-success";
+        return "success";
     }
 
     @GetMapping("/register/failure")
     public String failureRegister() {
+        return "failure";
+    }
+
+
+    @GetMapping("/password/success")
+    public String changePasswordSuccess() {
+        return "success";
+    }
+
+    @GetMapping("/password/failure")
+    public String changePasswordFailure() {
         return "failure";
     }
 

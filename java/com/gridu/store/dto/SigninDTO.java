@@ -1,12 +1,11 @@
-package com.gridu.store.DTO;
+package com.gridu.store.dto;
 
 import lombok.Data;
 
 @Data
-public class AccountDTO {
+public class SigninDTO {
 
     private String email;
     private String password;
-    private String repeated;
 
 }

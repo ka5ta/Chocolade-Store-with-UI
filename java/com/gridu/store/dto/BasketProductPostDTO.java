@@ -1,10 +1,7 @@
-package com.gridu.store.DTO;
+package com.gridu.store.dto;
 
 
 import lombok.Data;
-import org.springframework.web.bind.annotation.ModelAttribute;
-
-import java.io.Serializable;
 
 @Data
 public class BasketProductPostDTO {

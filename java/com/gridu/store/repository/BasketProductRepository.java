@@ -1,6 +1,6 @@
 package com.gridu.store.repository;
 
-import com.gridu.store.DTO.BasketProductDTO;
+import com.gridu.store.dto.BasketProductSqlDTO;
 import com.gridu.store.model.Account;
 import com.gridu.store.model.Product;
 import com.gridu.store.model.BasketProduct;
@@ -24,7 +24,7 @@ public interface BasketProductRepository extends CrudRepository<BasketProduct, L
             "FROM PRODUCTS p " +
             "LEFT JOIN STOCK s ON s.PRODUCT_ID = p.ID " +
             "LEFT JOIN BASKET_PRODUCTS b ON b.PRODUCT_ID=p.ID and b.ACCOUNT_ID=:accountId", nativeQuery = true)
-    List<BasketProductDTO> findAllWithBasketProductByAccountId(@Param("accountId") Long accountId);
+    List<BasketProductSqlDTO> findAllWithBasketProductByAccountId(@Param("accountId") Long accountId);
 
 
     List<BasketProduct> findByAccountId(Long accountId);

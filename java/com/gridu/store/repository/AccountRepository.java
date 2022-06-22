@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface AccountRepository extends CrudRepository<Account, Long> {
 
     List<Account> findAll();
-    Optional<Account> findByEmail(String email);
+    Optional<Account> findByEmailIgnoreCase(String email);
 }

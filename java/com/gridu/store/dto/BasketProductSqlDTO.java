@@ -1,16 +1,11 @@
-package com.gridu.store.DTO;
-
-import lombok.Data;
+package com.gridu.store.dto;
 
 
-public interface BasketProductDTO {
-
-
+public interface BasketProductSqlDTO {
 
     Long getProductId();
     Integer getStockQuantity();
     Integer getBasketQuantity();
     Long getBasketProductId();
 
-    String getBasketProductPrice();
 }

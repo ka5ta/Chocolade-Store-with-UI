@@ -22,5 +22,13 @@ public class BasketProduct {
     private Product product;
     private int quantity;
 
-
+    @Override
+    public String toString() {
+        return "BasketProduct{" +
+                "id=" + id +
+                ", account=" + account +
+                ", product=" + product.getName() +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

@@ -21,5 +21,12 @@ public class Stock {
 
     private int quantity;
 
-
+    @Override
+    public String toString() {
+        return "Stock{" +
+                "id=" + id +
+                ", product=" + product.getName() +
+                ", quantity=" + quantity +
+                '}';
+    }
 }

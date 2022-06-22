@@ -11,7 +11,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.util.List;
 
-@Service @RequiredArgsConstructor
+@Service
+@RequiredArgsConstructor
 public class OrderService {
 
     private final OrderRepository repository;
@@ -20,17 +21,19 @@ public class OrderService {
     private final OrderProductService orderProductService;
 
 
-
-    public Order createOrder(long accountId) {
-        Account account = accountService.findById(accountId);
+    public Order createOrder(String email) {
+        Account account = accountService.findByEmailOrThrow(email);
         Order order = new Order(account);
 
-        List<BasketProduct> basketProducts = basketProductService.findAllByAccountId(accountId);
+        List<BasketProduct> basketProducts = basketProductService.findAllByAccountId(account.getId());
         List<OrderProduct> orderProducts = orderProductService.convertBasketProductsToOrderProducts(basketProducts, order);
         order.setOrderProducts(orderProducts);
 
+        basketProductService.clearAllBasketsForAccountAndAdjustStock(account);
+
         return order;
     }
+
 
     public void save(Order order) {
         repository.save(order);

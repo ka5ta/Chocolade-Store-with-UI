@@ -1,8 +1,8 @@
 package com.gridu.store.service;
 
-import com.gridu.store.DTO.BasketProductDTO;
-import com.gridu.store.DTO.BasketProductGetDTO;
-import com.gridu.store.DTO.BasketProductPostDTO;
+import com.gridu.store.dto.BasketProductSqlDTO;
+import com.gridu.store.dto.BasketProductGetDTO;
+import com.gridu.store.dto.BasketProductPostDTO;
 import com.gridu.store.model.Account;
 import com.gridu.store.model.Product;
 import com.gridu.store.model.BasketProduct;
@@ -11,7 +11,6 @@ import com.gridu.store.repository.BasketProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.*;
 
 @Service @RequiredArgsConstructor
@@ -22,8 +21,9 @@ public class BasketProductService {
     private final AccountService accountService;
     private final StockService stockService;
 
+    //this is list of product baskets for a currently logged user, to be sent to the frontend, (using SQL statement)
     public List<BasketProductGetDTO> getBasketProductForAccount(Account account) {
-        List<BasketProductDTO> allProductsInProductBasketForUser = getAllProductsInProductBasketForUser(account);
+        List<BasketProductSqlDTO> allProductsInProductBasketForUser = getAllProductsInProductBasketForUser(account);
         List<BasketProductGetDTO> basketsProductForAccount = new ArrayList<>();
 
         allProductsInProductBasketForUser.forEach(b -> {
@@ -46,10 +46,10 @@ public class BasketProductService {
         return basketsProductForAccount;
     }
 
-    public BasketProduct createOrUpdateBasketProduct(BasketProductPostDTO basketProductPostDTO) {
+    public BasketProduct createOrUpdateBasketProduct(BasketProductPostDTO basketProductPostDTO, String email) {
 
         Product product = productService.findById(basketProductPostDTO.getProductId());
-        Account account = accountService.findById(basketProductPostDTO.getAccountId());
+        Account account = accountService.findByEmailOrThrow(email);
         Integer quantity = basketProductPostDTO.getBasketQuantity();
 
         if (!canUpdateQuantity(product, quantity)) {
@@ -87,7 +87,7 @@ public class BasketProductService {
     }
 
 
-    public List<BasketProductDTO> getAllProductsInProductBasketForUser(Account account) {
+    public List<BasketProductSqlDTO> getAllProductsInProductBasketForUser(Account account) {
         return repository.findAllWithBasketProductByAccountId(account.getId());
     }
 
@@ -97,6 +97,14 @@ public class BasketProductService {
 
     public void remove(BasketProduct basketProduct) {
         repository.delete(basketProduct);
+    }
+
+    public void clearAllBasketsForAccountAndAdjustStock(Account account) {
+        List<BasketProduct> basketProducts = findAllByAccountId(account.getId());
+        basketProducts.forEach(bp -> {
+            stockService.subtractQuantityFromStock(bp);
+            remove(bp);
+        });
     }
 }
 

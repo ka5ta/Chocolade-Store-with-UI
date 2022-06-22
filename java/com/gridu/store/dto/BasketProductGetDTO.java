@@ -1,14 +1,13 @@
-package com.gridu.store.DTO;
+package com.gridu.store.dto;
 
 import lombok.Data;
 
 
 @Data
 public class BasketProductGetDTO {
-//public class BasketProductGetDTO implements BasketProductDTO {
 
     private Long productId;
-    private Long accountId = 1L;
+    private Long accountId;
     private String productName;
     private double productPrice;
     private Integer stockQuantity;

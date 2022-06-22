@@ -1,14 +1,13 @@
 package com.gridu.store.model;
-
-
 import com.gridu.store.constraint.Role;
+
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import javax.persistence.*;
+
 import java.time.Instant;
 import java.util.*;
 
@@ -34,6 +33,7 @@ public class Account implements UserDetails {
     @OneToMany(mappedBy = "account")
     private List<BasketProduct> basketProducts;
     private Instant created;
+    private Instant updated;
     private boolean accountNonExpired = true;
     private boolean accountNonLocked = true;
     private boolean credentialsNonExpired = true;
@@ -49,6 +49,7 @@ public class Account implements UserDetails {
         this.password = password;
         this.role = role;
         this.created = Instant.now();
+        this.updated = null;
         this.accountNonExpired = true;
         this.accountNonLocked = true;
         this.credentialsNonExpired = true;

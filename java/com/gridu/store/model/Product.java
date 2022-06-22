@@ -1,6 +1,5 @@
 package com.gridu.store.model;
 
-import com.gridu.store.DTO.BasketProductDTO;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -26,6 +25,17 @@ public class Product {
 
     @OneToMany(mappedBy = "product")
     private List<OrderProduct> orderProducts;
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", price=" + price +
+                ", stock=" + stock.getId() +
+                ", orderProducts=" + orderProducts +
+                '}';
+    }
 }
 
 
